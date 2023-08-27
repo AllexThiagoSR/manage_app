@@ -1,5 +1,5 @@
 {
-  "name": "event-house-manager",
+  "name": "manager-app",
   "version": "1.0.0",
   "description": "",
   "main": "./src/server",
@@ -42,7 +42,6 @@
     "joi": "^17.9.2",
     "jsonwebtoken": "8.5.1",
     "mysql2": "2.3.3",
-    "nodemailer": "^6.9.4",
     "sequelize": "6.25.5"
   }
 }
