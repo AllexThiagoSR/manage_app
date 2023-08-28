@@ -1,8 +1,8 @@
 import { DataTypes, Model, QueryInterface } from "sequelize";
-import IRole from "../../interfaces/IRole";
+import IDBBase from "../../interfaces/IDBBase";
 
 export default {
-  up: async (queryInterface: QueryInterface) => queryInterface.createTable<Model<IRole>>(
+  up: async (queryInterface: QueryInterface) => queryInterface.createTable<Model<IDBBase>>(
     'roles',
     {
       id: {

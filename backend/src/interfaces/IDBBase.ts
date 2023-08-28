@@ -1,7 +1,7 @@
-interface IRole {
+interface IDBBase {
   id: number;
   name: string;
   description: string;
 }
 
-export default IRole;
+export default IDBBase;
