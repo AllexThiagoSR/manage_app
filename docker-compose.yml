@@ -3,7 +3,7 @@ services:
   api:
     build: ./backend
     container_name: api
-    command: dev
+    command: predev
     working_dir: /app
     volumes:
       - ./backend/src:/app/src
