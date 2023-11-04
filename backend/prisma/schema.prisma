@@ -34,6 +34,6 @@ model PaymentType {
 model ExpenseType {
   id Int @id @default(autoincrement())
   name String @unique
-  description String
+  description String?
   @@map("expense_types")
 }
