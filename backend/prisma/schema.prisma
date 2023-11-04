@@ -9,3 +9,31 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Role {
+  id Int @id @default(autoincrement())
+  name String @unique
+  description String
+  @@map("roles")
+}
+
+model PaymentStatus {
+  id Int @id @default(autoincrement())
+  name String @unique
+  description String
+  @@map("payment_status")
+}
+
+model PaymentType {
+  id Int @id @default(autoincrement())
+  name String @unique
+  description String
+  @@map("payment_types")
+}
+
+model ExpenseType {
+  id Int @id @default(autoincrement())
+  name String @unique
+  description String
+  @@map("expense_types")
+}

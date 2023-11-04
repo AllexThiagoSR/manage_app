@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "./src/server",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "scripts": {
-    "db:reset": "npx tsc && npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "db:reset": "npx prisma migrate reset",
     "build": "tsc --project tsconfig.json",
     "prestart": "npm run build && npm run db:reset",
     "start": "node ./build/server.js",
@@ -26,11 +29,13 @@
     "@typescript-eslint/parser": "^6.2.0",
     "eslint": "^8.45.0",
     "nodemon": "2.0.15",
+    "prisma": "^5.5.2",
     "ts-node": "10.7.0",
     "ts-node-dev": "1.1.8",
     "typescript": "4.4.4"
   },
   "dependencies": {
+    "@prisma/client": "^5.5.2",
     "@types/nodemailer": "^6.4.9",
     "bcryptjs": "2.4.3",
     "cors": "2.8.5",
@@ -39,7 +44,6 @@
     "express-async-errors": "3.1.1",
     "joi": "^17.9.2",
     "jsonwebtoken": "8.5.1",
-    "mysql2": "2.3.3",
-    "prisma": "^5.5.2"
+    "mysql2": "2.3.3"
   }
 }
