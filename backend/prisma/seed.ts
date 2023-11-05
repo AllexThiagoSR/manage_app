@@ -10,10 +10,6 @@ const main = async () => {
         description: 'Dono do negócio',
       },
       {
-        name: 'Administrador/Desenvolvedor',
-        description: 'Administrador do negócio',
-      },
-      {
         name: 'Colaborador',
         description: 'Um colaborador contratado',
       }
@@ -66,7 +62,7 @@ const main = async () => {
         name: 'Pagamento de conta',
       },
       {
-        name: 'Pagamento de empregado ',
+        name: 'Pagamento de empregado',
       },
     ]
   });
