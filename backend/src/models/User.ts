@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import IUser from '../interfaces/IUser';
+import IUserModel from '../interfaces/IUserModel';
 
-export default class UserModel {
+export default class UserModel implements IUserModel {
   private model = (new PrismaClient()).user;
 
   public async getById(id: number): Promise<IUser | null> {
