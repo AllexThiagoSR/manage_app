@@ -4,7 +4,7 @@
   "description": "",
   "main": "./src/server",
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node src/seeders/seed.ts"
   },
   "scripts": {
     "db:reset": "npx prisma migrate reset",

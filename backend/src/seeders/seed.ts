@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcryptjs';
 
 const client = new PrismaClient();
 
@@ -65,6 +66,14 @@ const main = async () => {
         name: 'Pagamento de empregado',
       },
     ]
+  });
+
+  await client.user.create({
+    data: {
+      email: process.env.ADM_EMAIL || 'adm@adm.com',
+      password: bcrypt.hashSync(process.env.ADM_PASSWORD || 'senhaSuperSecreta', 10),
+      isAdmin: true,
+    },
   });
 }
 
