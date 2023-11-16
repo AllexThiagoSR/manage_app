@@ -1,4 +1,4 @@
-interface ICreateUser {
+type CreateUser = {
   email: string;
   fullName: string;
   password: string;
@@ -6,4 +6,4 @@ interface ICreateUser {
   employeeId?: number;
 }
 
-export default ICreateUser;
+export default CreateUser;

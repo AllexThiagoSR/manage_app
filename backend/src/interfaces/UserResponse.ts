@@ -1,11 +1,10 @@
-interface IUser {
+type UserResponse = {
   id: number;
   fullName: string;
   email: string;
-  password: string;
   isAdmin: boolean;
   employeeId?: number | null;
   employee?: unknown | null;
 }
 
-export default IUser;
+export default UserResponse;

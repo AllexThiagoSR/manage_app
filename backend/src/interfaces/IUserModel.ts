@@ -1,11 +1,11 @@
-import ICreateUser from './ICreateUser';
-import IUser from './IUser';
-import IUserResponse from './IUserResponse';
+import CreateUser from './CreateUser';
+import User from './User';
+import UserResponse from './UserResponse';
 
 interface IUserModel {
-  getById(id: number): Promise<IUser | null>;
-  getByEmail(email: string): Promise<IUser | null>;
-  create(data: ICreateUser): Promise<IUserResponse>;
+  getById(id: number): Promise<User | null>;
+  getByEmail(email: string): Promise<User | null>;
+  create(data: CreateUser): Promise<UserResponse>;
 }
 
 export default IUserModel;

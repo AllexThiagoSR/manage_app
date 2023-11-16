@@ -3,8 +3,8 @@ import IUserModel from '../interfaces/IUserModel';
 import Encrypter from '../utils/Encrypter';
 import ServiceResponse from '../utils/ServiceResponse';
 import TokenUtils from '../utils/TokenUtils';
-import ICreateUser from '../interfaces/ICreateUser';
-import IUserResponse from '../interfaces/IUserResponse';
+import CreateUser from '../interfaces/CreateUser';
+import UserResponse from '../interfaces/UserResponse';
 
 type Token = { token: string };
 
@@ -34,17 +34,17 @@ export default class UserService {
     }
   }
 
-  public async signUp (userData: ICreateUser): Promise<ServiceResponse<IUserResponse>> {
+  public async signUp (userData: CreateUser): Promise<ServiceResponse<UserResponse>> {
     try {
       const foundUser = await this.model.getByEmail(userData.email);
       if (foundUser) {
-        return new ServiceResponse<IUserResponse>('CONFLICT', 'Email already exists');
+        return new ServiceResponse<UserResponse>('CONFLICT', 'Email already exists');
       }
       userData.password = this.encrypter.encrypt(userData.password);
       const user = await this.model.create(userData);
-      return new ServiceResponse<IUserResponse>('CREATED', user);
+      return new ServiceResponse<UserResponse>('CREATED', user);
     } catch (error) {
-      return new ServiceResponse<IUserResponse>('INTERNAL_ERROR', 'An internal error has occurred');
+      return new ServiceResponse<UserResponse>('INTERNAL_ERROR', 'An internal error has occurred');
     }
   }
 }

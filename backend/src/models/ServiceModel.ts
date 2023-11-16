@@ -1,10 +1,14 @@
 import { PrismaClient } from '@prisma/client';
-import ICreateService from '../interfaces/ICreateService';
+import CreateService from '../interfaces/CreateService';
+import IServiceModel from '../interfaces/IServiceModel';
+import Service from '../interfaces/Service';
 
-export default class ServiceModel {
+export default class ServiceModel implements IServiceModel {
   private model = (new PrismaClient()).service;
 
-  public async create({ clientFirstName, clientLastName, statusId }: ICreateService) {
+  public async create({
+    clientFirstName, clientLastName, statusId,
+  }: CreateService): Promise<Service> {
     const service = await this.model.create({
       data: {
         clientFirstName,
@@ -21,7 +25,7 @@ export default class ServiceModel {
     return service;
   }
 
-  public async createWithItems(data: ICreateService) {
+  public async createWithItems(data: CreateService): Promise<Service> {
     const service = await this.model.create({
       data: {
         clientFirstName: data.clientFirstName,
