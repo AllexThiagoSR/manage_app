@@ -95,9 +95,10 @@ model ExpenseHistory {
 
 model User {
   id Int @id @default(autoincrement())
+  fullName String @map("full_name")
   employeeId Int? @unique @map("employee_id")
   employee Employee? @relation(fields: [employeeId], references: [id])
-  email String
+  email String @unique
   password String
   isAdmin Boolean @default(false) @map("is_admin")
   @@map("users")

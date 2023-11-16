@@ -70,6 +70,7 @@ const main = async () => {
 
   await client.user.create({
     data: {
+      fullName: 'Allex Thiago Santos Rosa',
       email: process.env.ADM_EMAIL || 'adm@adm.com',
       password: bcrypt.hashSync(process.env.ADM_PASSWORD || 'senhaSuperSecreta', 10),
       isAdmin: true,
