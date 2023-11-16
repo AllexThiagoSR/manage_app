@@ -10,6 +10,12 @@ export default class ServiceModel {
         clientFirstName,
         clientLastName,
         statusId,
+      },
+      select: {
+        clientFirstName: true,
+        clientLastName: true,
+        id: true,
+        paymentStatus: true,
       }
     });
     return service;
@@ -21,10 +27,15 @@ export default class ServiceModel {
         clientFirstName: data.clientFirstName,
         clientLastName: data.clientLastName,
         statusId: data.statusId,
-        items: {
-          create: data.items,
-        }
+        items: { create: data.items }
       },
+      select: {
+        clientFirstName: true,
+        clientLastName: true,
+        id: true,
+        paymentStatus: true,
+      }
+      // include: { paymentStatus: true },
     });
     return service;
   }
