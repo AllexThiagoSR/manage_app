@@ -1,8 +1,10 @@
 import { Router } from 'express';
 import UserController from '../controllers/UserController';
 import UserMiddlewares from '../middlewares/UserMiddlewares';
+// import AuthMiddleware from '../middlewares/AuthMiddleware';
 
 const router = Router();
+// const auth = new AuthMiddleware();
 
 router.post(
   '/login',
