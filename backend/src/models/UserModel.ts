@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import IUser from '../interfaces/IUser';
 import IUserModel from '../interfaces/IUserModel';
 import ICreateUser from '../interfaces/ICreateUser';
+import IUserResponse from '../interfaces/IUserResponse';
 
 export default class UserModel implements IUserModel {
   private model = (new PrismaClient()).user;
@@ -16,9 +17,15 @@ export default class UserModel implements IUserModel {
     return user;
   }
 
-  public async create(data: ICreateUser) {
+  public async create(data: ICreateUser): Promise<IUserResponse> {
     const user = await this.model.create({
       data,
+      select: {
+        email: true,
+        fullName: true,
+        isAdmin: true,
+        id: true,
+      }
     });
 
     return user;

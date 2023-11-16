@@ -13,4 +13,16 @@ export default class UserController {
     const { status, data } = await this.service.login(email, password);
     return res.status(status).json(data);
   }
+
+  public async signUp (req: Request, res: Response) {
+    const {
+      email,
+      password,
+      fullName,
+    } = req.body;
+    const { status, data } = await this.service.signUp({
+      email, password, fullName, isAdmin: false,
+    });
+    return res.status(status).json(data);
+  }
 }
