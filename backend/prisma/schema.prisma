@@ -57,6 +57,7 @@ model Service {
   clientFirstName String @map("client_first_name")
   clientLastName String @map("client_last_name")
   statusId Int @map("status_id") @default(1)
+  serviceDate DateTime @map("service_date") @default(now())
   paymentStatus PaymentStatus @relation(fields: [statusId], references: [id])
   items ServiceItem[]
   paymentsHistory ServicePaymentHistory[]
@@ -80,7 +81,7 @@ model ServicePaymentHistory {
   paidValue Decimal @db.Decimal(12, 2) @map("paid_value")
   paymentTypeId Int @map("payment_type_id")
   paymentType PaymentType @relation(fields: [paymentTypeId], references: [id])
-  date DateTime @default(now())
+  paymentDate DateTime @map("payment_date") @default(now())
   @@map("services_payments_history")
 }
 
