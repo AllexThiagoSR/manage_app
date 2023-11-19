@@ -5,6 +5,7 @@ import Service from '../interfaces/Service';
 
 export default class ServiceModel implements IServiceModel {
   private model = (new PrismaClient()).service;
+  private itemsModel = (new PrismaClient()).serviceItem;
 
   public async create({
     clientFirstName, clientLastName, statusId,
@@ -20,6 +21,7 @@ export default class ServiceModel implements IServiceModel {
         clientLastName: true,
         id: true,
         paymentStatus: true,
+        serviceDate: true,
       }
     });
     return service;
@@ -38,8 +40,36 @@ export default class ServiceModel implements IServiceModel {
         clientLastName: true,
         id: true,
         paymentStatus: true,
+        serviceDate: true,
+      },
+    });
+    return service;
+  }
+
+  public async getAll(): Promise<Service[]> {
+    const services = await this.model.findMany({
+      select: {
+        clientFirstName: true,
+        clientLastName: true,
+        id: true,
+        paymentStatus: true,
+        serviceDate: true,
       }
-      // include: { paymentStatus: true },
+    });
+    return services;
+  }
+
+  public async getById(id: number): Promise<Service | null> {
+    const service = await this.model.findUnique({
+      where: { id },
+      select: {
+        clientFirstName: true,
+        clientLastName: true,
+        id: true,
+        paymentStatus: true,
+        serviceDate: true,
+        items: { select: { description: true, price: true, quantity: true } },
+      },
     });
     return service;
   }

@@ -6,7 +6,9 @@ type Service = {
   clientFirstName: string;
   clientLastName: string;
   paymentStatus: PaymentStatus;
+  serviceDate: Date;
   items?: ServiceItem[];
+  totalPrice?: number;
 };
 
 export default Service;
