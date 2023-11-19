@@ -24,4 +24,15 @@ export default class AuthMiddleware {
       return res.status(500).json({ message: 'Internal server error' });
     }
   }
+
+  public static checkAdmin(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (!res.locals.user.isAdmin) {
+        return res.status(403).json({ message: 'Only admins can access this route' });
+      }
+      return next();
+    } catch (error) {
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  }
 }
