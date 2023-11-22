@@ -1,31 +1,26 @@
-import TokenUtils from '../utils/TokenUtils';
-import ITokenHandler from '../interfaces/ITokenHandler';
 import { NextFunction, Request, Response } from 'express';
+import AuthService from '../services/AuthService';
+import ServiceResponse from '../utils/ServiceResponse';
 
 export default class AuthMiddleware {
-  private tokenHandler: ITokenHandler;
+  private tokenService: AuthService;
 
-  constructor(t: ITokenHandler = new TokenUtils()) {
-    this.tokenHandler = t;
+  constructor(t: AuthService = new AuthService()) {
+    this.tokenService = t;
   }
 
   public validateToken(req: Request, res: Response, next: NextFunction) {
     try {
-      let token = req.header('Authorization');
-      if (!token) return res.status(401).json({ message: 'Token not found' });
-      if (!token.includes('Bearer')) return res.status(401).json({ message: 'Invalid token' });
-      token = token.split(' ')[1];
-      const user = this.tokenHandler.decode(token);
-      res.locals.user = user;
+      const token = req.header('Authorization');
+      res.locals.user = this.tokenService.validateToken(token)
       return next();
     } catch (error) {
-      const { message } = error as Error;
-      if (message.includes('token')) return res.status(401).json({ message: 'Invalid token' });
-      return res.status(500).json({ message: 'Internal server error' });
+      const { status, data } = error as ServiceResponse<null>
+      return res.status(status).json(data);
     }
   }
 
-  public static checkAdmin(req: Request, res: Response, next: NextFunction) {
+  public static checkAdmin(_req: Request, res: Response, next: NextFunction) {
     try {
       if (!res.locals.user.isAdmin) {
         return res.status(403).json({ message: 'Only admins can access this route' });

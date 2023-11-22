@@ -30,6 +30,8 @@ export default class ServiceService {
       const services = await this.model.getAll();
       return new ServiceResponse<Service[]>('OK', services);
     } catch (error) {
+      console.log(error);
+      
       return new ServiceResponse<Service[]>('INTERNAL_ERROR', 'Internal server error');
     }
   }
