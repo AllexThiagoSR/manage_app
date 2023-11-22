@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import AuthService from '../services/AuthService';
-import ServiceResponse from '../utils/ServiceResponse';
 
 export default class AuthMiddleware {
   private tokenService: AuthService;
@@ -10,14 +9,13 @@ export default class AuthMiddleware {
   }
 
   public validateToken(req: Request, res: Response, next: NextFunction) {
-    try {
-      const token = req.header('Authorization');
-      res.locals.user = this.tokenService.validateToken(token)
+    const token = req.header('Authorization');
+    const { status, data } = this.tokenService.validateToken(token);
+    if (status === 200) {
+      res.locals.user = data;
       return next();
-    } catch (error) {
-      const { status, data } = error as ServiceResponse<null>
-      return res.status(status).json(data);
     }
+    return res.status(status).json(data);
   }
 
   public static checkAdmin(_req: Request, res: Response, next: NextFunction) {

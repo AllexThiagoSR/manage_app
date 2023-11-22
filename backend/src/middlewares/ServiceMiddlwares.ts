@@ -11,7 +11,6 @@ export default class ServiceMiddlewares {
   private static validateService = joi.object({
     clientFirstName: joi.string().required().min(3),
     clientLastName: joi.string().required().min(3),
-    statusId: joi.number().integer(),
     items: joi.array().items(ServiceMiddlewares.validateItemService),
   });
 

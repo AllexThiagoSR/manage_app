@@ -6,4 +6,5 @@ export default interface IServiceModel {
   createWithItems(data: CreateService): Promise<Service>;
   getAll(): Promise<Service[]>;
   getById(id: number): Promise<Service | null>;
+  updatePaymentStatus(id: number, statusId: number): Promise<Service>;
 }

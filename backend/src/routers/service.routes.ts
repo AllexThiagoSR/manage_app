@@ -24,4 +24,10 @@ router.get(
   (req, res) => controller.getById(req, res),
 )
 
+router.patch(
+  '/:id/pay',
+  AuthMiddleware.checkAdmin,
+  (req, res) => controller.pay(req, res)
+);
+
 export default router;

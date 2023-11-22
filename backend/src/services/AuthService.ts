@@ -10,21 +10,21 @@ export default class AuthService {
     this.tokenHandler = t;
   }
 
-  public validateToken(token?: string): JwtPayload {
+  public validateToken(token?: string): ServiceResponse<JwtPayload> {
     try {
-      if (!token) throw new ServiceResponse<null>('UNAUTHORIZED', 'Token not found.');
+      if (!token) return new ServiceResponse<JwtPayload>('UNAUTHORIZED', 'Token not found.');
       if (!token.includes('Bearer')) {
-        throw new ServiceResponse<null>('UNAUTHORIZED', 'Invalid token.');
+        return new ServiceResponse<JwtPayload>('UNAUTHORIZED', 'Invalid token.');
       }
       const splittedToken = token.split(' ')[1];
       const user = this.tokenHandler.decode(splittedToken);
-      return user;
+      return new ServiceResponse<JwtPayload>('OK', user);
     } catch (error) {
       const { message } = error as Error;
       if (message.includes('token') || message.includes('expired')) {
-        throw new ServiceResponse<null>('UNAUTHORIZED', 'Invalid or expired token.');
+        return new ServiceResponse<JwtPayload>('UNAUTHORIZED', 'Invalid or expired token.');
       }
-      throw new ServiceResponse<null>('INTERNAL_ERROR', 'Internal server error.');
+      return new ServiceResponse<JwtPayload>('INTERNAL_ERROR', 'Internal server error.');
     }
   }
 }

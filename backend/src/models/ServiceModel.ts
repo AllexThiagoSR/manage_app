@@ -5,16 +5,15 @@ import Service from '../interfaces/Service';
 
 export default class ServiceModel implements IServiceModel {
   private model = (new PrismaClient()).service;
-  private itemsModel = (new PrismaClient()).serviceItem;
 
   public async create({
-    clientFirstName, clientLastName, statusId,
+    clientFirstName, clientLastName,
   }: CreateService): Promise<Service> {
     const service = await this.model.create({
       data: {
         clientFirstName,
         clientLastName,
-        statusId,
+        statusId: 1,
       },
       select: {
         clientFirstName: true,
@@ -32,7 +31,7 @@ export default class ServiceModel implements IServiceModel {
       data: {
         clientFirstName: data.clientFirstName,
         clientLastName: data.clientLastName,
-        statusId: data.statusId,
+        statusId: 1,
         items: { create: data.items }
       },
       select: {
@@ -69,6 +68,28 @@ export default class ServiceModel implements IServiceModel {
         paymentStatus: true,
         serviceDate: true,
         items: { select: { description: true, price: true, quantity: true } },
+        paymentsHistory: {
+          select: { id: true, paidValue: true, paymentDate: true, paymentType: true }
+        },
+      },
+    });
+    return service;
+  }
+
+  public async updatePaymentStatus(id: number, statusId: number):Promise<Service> {
+    const service = await this.model.update({
+      where: { id },
+      data: { statusId },
+      select: {
+        clientFirstName: true,
+        clientLastName: true,
+        id: true,
+        paymentStatus: true,
+        serviceDate: true,
+        items: { select: { description: true, price: true, quantity: true } },
+        paymentsHistory: {
+          select: { id: true, paidValue: true, paymentDate: true, paymentType: true }
+        },
       },
     });
     return service;

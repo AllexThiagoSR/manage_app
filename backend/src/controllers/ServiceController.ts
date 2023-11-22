@@ -18,8 +18,18 @@ export default class ServiceController {
     return res.status(status).json(data);
   }
 
-  public async getAll(req: Request, res: Response) {
+  public async getAll(_req: Request, res: Response) {
     const { status, data } = await this.service.getAll();
+    return res.status(status).json(data);
+  }
+
+  public async pay(req: Request, res: Response) {
+    const { value, paymentTypeId } = req.body;
+    const { status, data } = await this.service.pay(
+      Number(req.params.id),
+      value,
+      paymentTypeId,
+    );
     return res.status(status).json(data);
   }
 }
