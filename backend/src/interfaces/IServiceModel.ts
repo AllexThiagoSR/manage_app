@@ -7,4 +7,5 @@ export default interface IServiceModel {
   getAll(): Promise<Service[]>;
   getById(id: number): Promise<Service | null>;
   updatePaymentStatus(id: number, statusId: number): Promise<Service>;
+  deleteService(id: number): Promise<Service>;
 }

@@ -30,4 +30,10 @@ router.patch(
   (req, res) => controller.pay(req, res)
 );
 
+router.delete(
+  '/:id',
+  AuthMiddleware.checkAdmin,
+  (req, res) => controller.deleteService(req, res),
+);
+
 export default router;

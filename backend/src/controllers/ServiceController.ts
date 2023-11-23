@@ -32,4 +32,9 @@ export default class ServiceController {
     );
     return res.status(status).json(data);
   }
+
+  public async deleteService(req: Request, res: Response) {
+    const { status, data } = await this.service.deleteService(Number(req.params.id))
+    return res.status(status).json(data);
+  }
 }

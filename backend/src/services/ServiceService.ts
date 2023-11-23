@@ -115,4 +115,20 @@ export default class ServiceService {
       return new ServiceResponse<Service>('INTERNAL_ERROR', 'Internal server error.');
     }
   }
+
+  public async deleteService(id: number): Promise<ServiceResponse<null>> {
+    try {
+      const service = await this.model.deleteService(id);
+      console.log(service);
+      return new ServiceResponse<null>('NO_CONTENT', null);
+    } catch (error) {
+      const { message } = error as Error;
+      console.log(message);
+      
+      if (message.includes('to delete does not exist')) {
+        return new ServiceResponse<null>('NOT_FOUND', 'Service not found.');
+      }
+      return new ServiceResponse<null>('INTERNAL_ERROR', 'Internal server error.');
+    }
+  }
 }

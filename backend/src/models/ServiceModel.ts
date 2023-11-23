@@ -5,6 +5,7 @@ import Service from '../interfaces/Service';
 
 export default class ServiceModel implements IServiceModel {
   private model = (new PrismaClient()).service;
+  private itemsModel = (new PrismaClient()).serviceItem;
 
   public async create({
     clientFirstName, clientLastName,
@@ -93,5 +94,12 @@ export default class ServiceModel implements IServiceModel {
       },
     });
     return service;
+  }
+
+  public async deleteService(id: number): Promise<Service> {
+    const items = this.itemsModel.deleteMany({ where: { serviceId: id } });
+    const service = this.model.delete({ where: { id } });
+    const transaction = await new PrismaClient().$transaction([items, service]);
+    return transaction[1];
   }
 }
