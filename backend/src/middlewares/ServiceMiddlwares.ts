@@ -14,8 +14,21 @@ export default class ServiceMiddlewares {
     items: joi.array().items(ServiceMiddlewares.validateItemService),
   });
 
+  private static paymentSchema = joi.object({
+    paymentTypeId: joi.number().integer().required(),
+    value: joi.number().required(),
+  });
+
   public static validateServiceFields(req: Request, res: Response, next: NextFunction) {
     const { error } = ServiceMiddlewares.validateService.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.message });
+    }
+    return next();
+  }
+
+  public static validatePayment(req: Request, res: Response, next: NextFunction) {
+    const { error } = ServiceMiddlewares.paymentSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.message });
     }

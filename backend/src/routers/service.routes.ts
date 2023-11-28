@@ -2,6 +2,7 @@ import { Router } from 'express';
 import ServiceController from '../controllers/ServiceController';
 import ServiceMiddlewares from '../middlewares/ServiceMiddlwares';
 import AuthMiddleware from '../middlewares/AuthMiddleware';
+import GeneralMiddlewares from '../middlewares/GeneralMiddlewares';
 
 const router = Router();
 
@@ -21,17 +22,21 @@ router.get(
 
 router.get(
   '/:id',
+  GeneralMiddlewares.validateId,
   (req, res) => controller.getById(req, res),
 )
 
 router.patch(
   '/:id/pay',
+  GeneralMiddlewares.validateId,
   AuthMiddleware.checkAdmin,
+  ServiceMiddlewares.validatePayment,
   (req, res) => controller.pay(req, res)
 );
 
 router.delete(
   '/:id',
+  GeneralMiddlewares.validateId,
   AuthMiddleware.checkAdmin,
   (req, res) => controller.deleteService(req, res),
 );

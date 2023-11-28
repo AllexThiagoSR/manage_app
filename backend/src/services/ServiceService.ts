@@ -110,7 +110,7 @@ export default class ServiceService {
 
       const updatedService = await this
         .payAndChangeStatus({ service, value, paymentTypeId ,totalPaid ,totalPrice })
-      return new ServiceResponse('OK', updatedService);
+      return new ServiceResponse<Service>('OK', updatedService);
     } catch (error) {
       return new ServiceResponse<Service>('INTERNAL_ERROR', 'Internal server error.');
     }
@@ -123,8 +123,6 @@ export default class ServiceService {
       return new ServiceResponse<null>('NO_CONTENT', null);
     } catch (error) {
       const { message } = error as Error;
-      console.log(message);
-      
       if (message.includes('to delete does not exist')) {
         return new ServiceResponse<null>('NOT_FOUND', 'Service not found.');
       }
