@@ -24,7 +24,13 @@ router.get(
   '/:id',
   GeneralMiddlewares.validateId,
   (req, res) => controller.getById(req, res),
-)
+);
+
+router.post(
+  '/:id/add-items',
+  GeneralMiddlewares.validateId,
+  (req, res) => controller.addItems(req, res),
+);
 
 router.patch(
   '/:id/pay',

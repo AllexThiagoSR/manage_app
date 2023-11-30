@@ -37,4 +37,12 @@ export default class ServiceController {
     const { status, data } = await this.service.deleteService(Number(req.params.id))
     return res.status(status).json(data);
   }
+
+  public async addItems(req: Request, res: Response) {
+    const { status, data } = await this.service.addItems(
+      Number(req.params.id),
+      req.body
+    );
+    return res.status(status).json(data);
+  }
 }

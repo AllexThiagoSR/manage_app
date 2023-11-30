@@ -6,6 +6,10 @@ import Service from '../interfaces/Service';
 import PaymentHistoryModel from '../models/PaymentHistoryModel';
 import ServiceItem from '../interfaces/ServiceItem';
 import Payment from '../interfaces/Payment';
+import CreateServiceItem from '../interfaces/CreateServiceItem';
+import IServiceItemsModel from '../interfaces/IServiceItemsModel';
+import ServiceItemsModel from '../models/ServiceItemsModel';
+import { Decimal } from '@prisma/client/runtime/library';
 
 type PayData = {
   service: Service, value: number, paymentTypeId: number, totalPaid: number, totalPrice: number,
@@ -14,13 +18,16 @@ type PayData = {
 export default class ServiceService {
   private model: IServiceModel;
   private paymentModel: PaymentHistoryModel;
+  private itemsModel: IServiceItemsModel;
 
   constructor(
     m: IServiceModel = new ServiceModel(),
-    p: PaymentHistoryModel = new PaymentHistoryModel()
+    p: PaymentHistoryModel = new PaymentHistoryModel(),
+    i: IServiceItemsModel = new ServiceItemsModel(),
   ) {
     this.model = m;
     this.paymentModel = p;
+    this.itemsModel = i;
   }
 
   private static calculateTotalPrice(items?: ServiceItem[]) {
@@ -29,7 +36,6 @@ export default class ServiceService {
   }
 
   private static calculatePaidValue(payments?: Payment[]) {
-    console.log(payments)
     const totalPaid = payments
       ?.reduce((acc, { paidValue }) => acc + parseFloat(paidValue.toString()), 0);
     return totalPaid || 0;
@@ -118,8 +124,7 @@ export default class ServiceService {
 
   public async deleteService(id: number): Promise<ServiceResponse<null>> {
     try {
-      const service = await this.model.deleteService(id);
-      console.log(service);
+      /*const service = */await this.model.deleteService(id);
       return new ServiceResponse<null>('NO_CONTENT', null);
     } catch (error) {
       const { message } = error as Error;
@@ -127,6 +132,25 @@ export default class ServiceService {
         return new ServiceResponse<null>('NOT_FOUND', 'Service not found.');
       }
       return new ServiceResponse<null>('INTERNAL_ERROR', 'Internal server error.');
+    }
+  }
+
+  public async addItems(
+    serviceId: number,
+    items: CreateServiceItem[],
+  ): Promise<ServiceResponse<Service>> {
+    try {
+      const service = await this.model.getById(serviceId);
+      if (!service) return new ServiceResponse<Service>('NOT_FOUND', 'Service not found.');
+      const itemsToAdd = items.map((item) => ({ serviceId, ...item }));
+      const itemsConverted = items.map((item) => ({ ...item, price: new Decimal(item.price)}));
+      await this.itemsModel.addItemInService(itemsToAdd);
+      service.items = [...(service.items || []), ...itemsConverted];
+      return new ServiceResponse<Service>('OK', service);
+    } catch (error) {
+      console.log(error);
+      
+      return new ServiceResponse<Service>('INTERNAL_ERROR', 'Internal server error.');
     }
   }
 }
