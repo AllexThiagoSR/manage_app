@@ -142,6 +142,9 @@ export default class ServiceService {
     try {
       const service = await this.model.getById(serviceId);
       if (!service) return new ServiceResponse<Service>('NOT_FOUND', 'Service not found.');
+      if (service.paymentStatus?.id === 3) {
+        return new ServiceResponse<Service>('CONFLICT', 'Service has already been paid.');
+      }
       const itemsToAdd = items.map((item) => ({ serviceId, ...item }));
       const itemsConverted = items.map((item) => ({ ...item, price: new Decimal(item.price)}));
       await this.itemsModel.addItemInService(itemsToAdd);
@@ -149,7 +152,6 @@ export default class ServiceService {
       return new ServiceResponse<Service>('OK', service);
     } catch (error) {
       console.log(error);
-      
       return new ServiceResponse<Service>('INTERNAL_ERROR', 'Internal server error.');
     }
   }
