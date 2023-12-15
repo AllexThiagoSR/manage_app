@@ -29,6 +29,7 @@ router.get(
 router.post(
   '/:id/add-items',
   GeneralMiddlewares.validateId,
+  AuthMiddleware.checkAdmin,
   (req, res) => controller.addItems(req, res),
 );
 
